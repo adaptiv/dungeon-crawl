@@ -27,6 +27,12 @@ defmodule DungeonCrawl.Room do
         description: "You are in a dark chamber. Thick veils cover the light.",
         actions: [forward(), search()],
         trigger: Triggers.Treasure
+      },
+      %Room{
+        description:
+          "You enter a bedroom with soft lighting. You think you hear dreamy music. The bed looks really comfortable.",
+        actions: [forward(), rest()],
+        trigger: Triggers.EnemyHidden
       }
     ]
 end
