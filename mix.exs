@@ -9,7 +9,7 @@ defmodule DungeonCrawl.MixProject do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      dialyzer: [plt_add_apps: [:mix]]
+      dialyzer: [plt_add_apps: [:mix], ignore_warnings: "dialyzer.ignore-warnings"]
     ]
   end
 
