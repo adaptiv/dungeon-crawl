@@ -19,7 +19,7 @@ defmodule DungeonCrawl.CLI.HeroChoice do
   end
 
   defp confirm_hero(chosen_hero) do
-    Shell.cmd("clear")
+    Shell.info("")
     Shell.info(chosen_hero.description)
     if Shell.yes?("Confirm?"), do: chosen_hero, else: start()
   end

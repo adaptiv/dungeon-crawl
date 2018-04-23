@@ -2,13 +2,13 @@ defmodule DungeonCrawl.CLI.Main do
   alias Mix.Shell.IO, as: Shell
 
   def start_game() do
-    Shell.cmd("clear")
     welcome_message()
-    Shell.prompt("Press enter to continue")
+    Shell.prompt("Press enter to continue...")
     crawl(hero_choice(), DungeonCrawl.Room.all())
   end
 
   defp welcome_message() do
+    Shell.cmd("clear")
     Shell.info("=== DungeonCrawl ===")
     Shell.info("You awake in a dungeon full of monsters.")
     Shell.info("You need to survive and find the exit.")
@@ -25,15 +25,17 @@ defmodule DungeonCrawl.CLI.Main do
     Shell.info("Unfortunately your wounds are too many to keep walking.")
     Shell.info("You fall onto the floor without strength to carry on.")
     Shell.info("Game over!")
-    Shell.prompt("")
+    Shell.info("")
   end
 
   defp crawl(character, rooms) do
+    Shell.info("")
     Shell.info("You keep moving forward to the next room.")
     Shell.prompt("Press Enter to continue")
     Shell.cmd("clear")
 
     Shell.info(DungeonCrawl.Character.current_stats(character))
+    Shell.info("")
 
     rooms
     |> Enum.random()
@@ -43,7 +45,7 @@ defmodule DungeonCrawl.CLI.Main do
   end
 
   defp trigger_action({room, action}, character) do
-    Shell.cmd("clear")
+    Shell.info("")
     room.trigger.run(character, action)
   end
 
