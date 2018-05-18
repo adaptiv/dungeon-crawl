@@ -3,20 +3,21 @@ defmodule DungeonCrawl.CLI.RoomActionsChoice do
   import DungeonCrawl.CLI.BaseCommands
 
   def start(room) do
-    room_actions = room.actions
-
     Shell.info(room.description())
 
-    chosen_action =
-      room_actions
-      |> display_options
-      |> generate_question
-      |> Shell.prompt()
-      |> parse_numerical_answer
-      |> find_action_by_index(room_actions)
-      |> handle_choice(room)
+    case chosen_action = select_action(room.actions) do
+      :error -> handle_invalid_choice(room)
+      _ -> {room, chosen_action}
+    end
+  end
 
-    {room, chosen_action}
+  defp select_action(room_actions) do
+    room_actions
+    |> display_options
+    |> generate_question
+    |> Shell.prompt()
+    |> parse_numerical_answer
+    |> find_action_by_index(room_actions)
   end
 
   defp find_action_by_index(index, room_actions)
@@ -27,12 +28,10 @@ defmodule DungeonCrawl.CLI.RoomActionsChoice do
     Enum.at(room_actions, index)
   end
 
-  defp handle_choice(:error, room) do
+  defp handle_invalid_choice(room) do
     Shell.info("")
     Shell.info("Please select one of the options...")
     Shell.info("")
     start(room)
   end
-
-  defp handle_choice(action, _), do: action
 end
