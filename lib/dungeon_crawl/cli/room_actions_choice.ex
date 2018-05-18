@@ -4,7 +4,6 @@ defmodule DungeonCrawl.CLI.RoomActionsChoice do
 
   def start(room) do
     room_actions = room.actions
-    find_action_by_index = &Enum.at(room_actions, &1)
 
     Shell.info(room.description())
 
@@ -14,8 +13,24 @@ defmodule DungeonCrawl.CLI.RoomActionsChoice do
       |> generate_question
       |> Shell.prompt()
       |> parse_answer
-      |> find_action_by_index.()
+      |> find_action_by_index(room_actions)
+      |> handle_choice(room)
 
     {room, chosen_action}
   end
+
+  defp find_action_by_index(index, room_actions) when index < 0 or index >= length(room_actions), do: :error
+
+  defp find_action_by_index(index, room_actions) do
+    Enum.at(room_actions, index)
+  end
+
+  defp handle_choice(:error, room) do
+    Shell.info("")
+    Shell.info("Please select one of the options...")
+    Shell.info("")
+    start(room)
+  end
+
+  defp handle_choice(action, _), do: action
 end
