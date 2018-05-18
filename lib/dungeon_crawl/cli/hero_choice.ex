@@ -12,12 +12,14 @@ defmodule DungeonCrawl.CLI.HeroChoice do
     |> display_options
     |> generate_question
     |> Shell.prompt()
-    |> parse_answer
+    |> parse_numerical_answer
     |> find_hero_by_index(heroes)
     |> confirm_hero
   end
 
-  defp find_hero_by_index(index, heroes) when index < 0 or index >= length(heroes), do: :error
+  defp find_hero_by_index(index, heroes)
+       when index < 0 or index >= length(heroes),
+       do: :error
 
   defp find_hero_by_index(index, heroes) do
     Enum.at(heroes, index)
